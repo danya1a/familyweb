@@ -1,9 +1,18 @@
-// 3D Scroll
 let zSpacing = -385,
     lastPos = zSpacing / 13,
     $frames = document.getElementsByClassName('frame'),
     frames = Array.from($frames),
     zVals = []
+
+let totalDistance = Math.abs(zSpacing) * frames.length;
+let depth = totalDistance / 5.5;
+depth += window.innerHeight;
+
+if (depth < window.innerHeight * 1.5) {
+    depth = window.innerHeight * 1.5;
+}
+
+document.body.style.height = depth + 'px';
 
 window.onscroll = function() {
     let top = document.documentElement.scrollTop,
@@ -23,7 +32,6 @@ window.onscroll = function() {
 
 window.scrollTo(0, 1)
 
-// Audio
 let soundButton = document.querySelector('.soundbutton'),
     audio = document.querySelector('.audio')
 
@@ -40,7 +48,6 @@ window.onblur = function() {
     audio.pause()
 }
 
-// Particles
 const RANDOM = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 const PARTICLES = document.querySelectorAll('.particle')
 PARTICLES.forEach(P => {
@@ -56,25 +63,22 @@ PARTICLES.forEach(P => {
     `)
 })
 
-// --- CANVAS TEXT LOGIC START ---
-
 var w = c.width = window.innerWidth,
     h = c.height = window.innerHeight,
     ctx = c.getContext( '2d' ),
     
-    hw = w / 2, // half-width
+    hw = w / 2,
     hh = h / 2;
 
-// --- ЛОГИКА ОПРЕДЕЛЕНИЯ УСТРОЙСТВА ---
 var screenW = window.innerWidth;
-var currentMode = 'desktop'; 
+var currentMode = 'desktop';
 
 if (screenW < 600) {
-    currentMode = 'mobile'; 
+    currentMode = 'mobile';
 } else if (screenW < 1200) {
-    currentMode = 'tablet'; 
+    currentMode = 'tablet';
 } else {
-    currentMode = 'desktop'; 
+    currentMode = 'desktop';
 }
 
 var config = {
@@ -85,7 +89,7 @@ var config = {
     },
     tablet: {
         strings: [ 'С ДНЕМ ВАШЕГО', '28 ЛЕТИЯ!' ],
-        charSize: 32, 
+        charSize: 32,
         charSpacing: 30
     },
     desktop: {
@@ -491,7 +495,7 @@ window.addEventListener( 'resize', function(){
     hh = h / 2;
     
     ctx.font = opts.charSize + 'px Verdana';
-    
+
     var newW = window.innerWidth;
     var newMode = 'desktop';
     if (newW < 600) newMode = 'mobile';
