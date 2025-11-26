@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход</title>
     
-    <style>
-        
+    <link rel="preload" href="media/IMG_2659.mp4" as="video" type="video/mp4">
 
+    <style>
         @font-face {
             font-family: 'raleway_c';
-            src: url('fonts/raleway-v22-cyrillic-300.woff2'); 
+            src: url('fonts/raleway-v22-cyrillic-300.woff2');
             font-weight: 300;
         }
         @font-face {
             font-family: 'raleway_c';
-            src: url('fonts/raleway-v22-cyrillic-100.woff2'); 
+            src: url('fonts/raleway-v22-cyrillic-100.woff2');
             font-weight: 100;
         }
 
         body {
-            font-family: 'raleway_c', sans-serif; 
+            font-family: 'raleway_c', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -41,7 +41,6 @@
             z-index: 2;
         }
 
-        /* Эффект свечения */
         .glow {
             position: absolute;
             width: 300px;
@@ -88,11 +87,6 @@
             box-shadow: 0 0 15px rgba(255,255,255,0.1);
         }
 
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-            font-weight: 100;
-        }
-
         button {
             padding: 15px 40px;
             background: linear-gradient(45deg, #ff416c, #ff4b2b);
@@ -109,15 +103,19 @@
             animation: fadeIn 1.5s ease 1s forwards;
             box-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
             font-family: 'raleway_c', sans-serif;
+            width: 100%;
+        }
+        
+        button:disabled {
+            background: #555;
+            cursor: wait;
+            transform: none;
+            box-shadow: none;
         }
 
-        button:hover {
+        button:hover:not(:disabled) {
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(255, 75, 43, 0.5);
-        }
-
-        button:active {
-            transform: scale(0.95);
         }
 
         #errorMessage {
@@ -162,13 +160,12 @@
         <h1>Доступ к воспоминаниям</h1>
         <input type="password" id="passwordInput" placeholder="Введите пароль..." autocomplete="off">
         <br>
-        <button onclick="checkPassword()">Открыть</button>
+        <button id="loginBtn" onclick="checkPassword()">Открыть</button>
         <p id="errorMessage">Неверный пароль</p>
     </div>
 
     <script>
-        
-        const correctHash = 1606;
+        const correctHash = 1606; 
 
         function getHash(str) {
             let hash = 0;
@@ -185,14 +182,20 @@
             const passwordInput = document.getElementById('passwordInput');
             const errorMessage = document.getElementById('errorMessage');
             const loginBox = document.getElementById('loginBox');
+            const loginBtn = document.getElementById('loginBtn');
 
             if (getHash(passwordInput.value) === correctHash) {
                 
-                document.body.style.transition = "opacity 1s";
+                loginBtn.innerHTML = "Загрузка истории..."; 
+                loginBtn.disabled = true; 
+                document.body.style.cursor = "wait";
+                
+                document.body.style.transition = "opacity 1.5s";
                 document.body.style.opacity = "0";
+                
                 setTimeout(() => {
-                    window.location.href = 'main.html';
-                }, 1000);
+                    window.location.replace('main.html');
+                }, 500);
 
             } else {
                 errorMessage.style.display = 'block';
